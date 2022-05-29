@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCPeO4dc4A_jOWyj0Vxs7fmL1Vb8mkK2hU',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: 'touropedia-350023.firebaseapp.com',
   projectId: 'touropedia-350023',
   storageBucket: 'touropedia-350023.appspot.com',
