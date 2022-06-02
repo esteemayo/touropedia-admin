@@ -40,21 +40,25 @@ const Topbar = () => {
           <IconContainer>
             <Settings style={{ fontSize: '2rem' }} />
           </IconContainer>
-          <Image
-            src={
-              user?.avatar ||
-              user?.user?.avatar ||
-              'assets/images/user-default.jpg'
-            }
-          />
-          <Profile>
-            <ArrowDropDown className='icon' />
-            <Options>
-              <Link to='/login' className='link'>
-                <Item onClick={handleLogout}>Logout</Item>
-              </Link>
-            </Options>
-          </Profile>
+          {user && (
+            <Image
+              src={
+                user?.avatar ||
+                user?.user?.avatar ||
+                'assets/images/user-default.jpg'
+              }
+            />
+          )}
+          {user && (
+            <Profile>
+              <ArrowDropDown className='icon' />
+              <Options>
+                <Link to='/login' className='link'>
+                  <Item onClick={handleLogout}>Logout</Item>
+                </Link>
+              </Options>
+            </Profile>
+          )}
         </TopRight>
       </Wrapper>
     </Container>
