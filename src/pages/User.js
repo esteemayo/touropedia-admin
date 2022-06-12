@@ -8,9 +8,11 @@ import {
 } from '@material-ui/icons';
 
 import { phone } from 'responsive';
+import { useState } from 'react';
 
 const User = () => {
   const { state: user } = useLocation();
+  const [file, setFile] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -77,14 +79,27 @@ const User = () => {
               <Upload>
                 <UpdateUserImage
                   src={
-                    user.avatar ||
-                    'https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto-compress&cs=tinysrgb&dpr=2&w=500'
+                    file
+                      ? URL.createObjectURL(file)
+                      : user.avatar ||
+                        'https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto-compress&cs=tinysrgb&dpr=2&w=500'
                   }
                 />
                 <FormLabel htmlFor='file'>
-                  <Publish style={{ fontSize: '2rem', cursor: 'pointer' }} />
+                  <Publish
+                    style={{
+                      fontSize: '2rem',
+                      color: '#00008b',
+                      cursor: 'pointer',
+                    }}
+                  />
                 </FormLabel>
-                <FormInput type='file' id='file' style={{ display: 'none' }} />
+                <FormInput
+                  type='file'
+                  id='file'
+                  onChange={(e) => setFile(e.target.files[0])}
+                  style={{ display: 'none' }}
+                />
               </Upload>
               <FormButton>Update</FormButton>
             </Right>
