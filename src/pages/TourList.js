@@ -6,6 +6,7 @@ import { DataGrid } from '@material-ui/data-grid';
 import { DeleteOutline } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { productColumns } from 'data';
 import { fetchTours, removeTour } from 'features/tour/tourSlice';
 
 const TourList = () => {
@@ -26,43 +27,7 @@ const TourList = () => {
     }
   };
 
-  const columns = [
-    { field: 'id', headerName: 'ID', width: 230 },
-    {
-      field: 'title',
-      headerName: 'Title',
-      width: 300,
-      renderCell: (params) => {
-        return (
-          <TourListTitle>
-            <Image src={params.row.image} />
-            {params.row.title}
-          </TourListTitle>
-        );
-      },
-    },
-    {
-      field: 'creator',
-      headerName: 'Creator',
-      width: 230,
-      renderCell: (params) => {
-        return (
-          <TourListUser>
-            <Image
-              src={
-                params.row.creator.avatar || 'assets/images/user-default.jpg'
-              }
-            />
-            {params.row.name}
-          </TourListUser>
-        );
-      },
-    },
-    {
-      field: 'tags',
-      headerName: 'Tags',
-      width: 230,
-    },
+  const actionColumn = [
     {
       field: 'action',
       headerName: 'Action',
@@ -70,7 +35,7 @@ const TourList = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={`/tours/${params.row.id}`} className='tour__link'>
+            <Link to={`/tours/${params.row._id}`} className='tour__link'>
               <EditButton>Edit</EditButton>
             </Link>
             <DeleteOutline
@@ -91,7 +56,7 @@ const TourList = () => {
     <Container>
       <DataGrid
         rows={tours}
-        columns={columns}
+        columns={productColumns.concat(actionColumn)}
         getRowId={(row) => row._id}
         disableSelectionOnClick
         pageSize={8}
@@ -106,25 +71,6 @@ const TourList = () => {
 const Container = styled.div`
   flex: 4;
   padding: 2rem;
-`;
-
-const TourListTitle = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const TourListUser = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Image = styled.img`
-  width: 3.2rem;
-  height: 3.2rem;
-  border-radius: 50%;
-  display: block;
-  object-fit: cover;
-  margin-right: 1rem;
 `;
 
 const EditButton = styled.button`
