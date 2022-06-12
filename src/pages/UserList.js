@@ -76,20 +76,6 @@ const Container = styled.div`
   flex: 4;
 `;
 
-const UserListUser = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Image = styled.img`
-  width: 3.2rem;
-  height: 3.2rem;
-  border-radius: 50%;
-  display: block;
-  object-fit: cover;
-  margin-right: 1rem;
-`;
-
 const EditButton = styled.button`
   border: none;
   display: block;
@@ -111,7 +97,5 @@ const EditButton = styled.button`
     outline: none;
   }
 `;
-
-const Wrapper = styled.div``;
 
 export default UserList;
