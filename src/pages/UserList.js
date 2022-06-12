@@ -7,6 +7,7 @@ import { DeleteOutline } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchAllUsers, removeUser } from 'features/user/userSlice';
+import { userColumns } from 'data';
 
 const UserList = () => {
   const dispatch = useDispatch();
@@ -26,31 +27,7 @@ const UserList = () => {
     }
   };
 
-  const columns = [
-    { field: '_id', headerName: 'ID', width: 230 },
-    {
-      field: 'user',
-      headerName: 'User',
-      width: 230,
-      renderCell: (params) => {
-        return (
-          <UserListUser>
-            <Image src={params.row.avatar || 'assets/images/user-default.jpg'} />
-            {params.row.name}
-          </UserListUser>
-        );
-      },
-    },
-    { field: 'email', headerName: 'Email', width: 200 },
-    { field: 'role', headerName: 'Role', width: 150 },
-    {
-      field: 'active',
-      headerName: 'Status',
-      width: 150,
-      renderCell: (params) => {
-        return <Wrapper>{params.row.active === true && 'Active'}</Wrapper>;
-      },
-    },
+  const actionColumn = [
     {
       field: 'action',
       headerName: 'Action',
@@ -83,7 +60,7 @@ const UserList = () => {
     <Container>
       <DataGrid
         rows={users}
-        columns={columns}
+        columns={userColumns.concat(actionColumn)}
         getRowId={(row) => row._id}
         disableSelectionOnClick
         pageSize={8}
