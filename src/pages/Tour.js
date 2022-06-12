@@ -95,7 +95,9 @@ const Tour = () => {
             </InfoItem>
             <InfoItem>
               <InfoKey>description: </InfoKey>
-              <InfoValue>{excerpt(tour && tour.description, 40)}</InfoValue>
+              <InfoValue>
+                {tour && tour.description && excerpt(tour.description, 40)}
+              </InfoValue>
             </InfoItem>
             <InfoItem>
               <InfoKey>tags: </InfoKey>
