@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import FileBase from 'react-file-base64';
+import { useEffect, useState } from 'react';
 import ChipInput from 'material-ui-chip-input';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { tourInputs } from 'formData';
 import { createNewTour } from 'features/tour/tourSlice';
 
 const initialState = {
@@ -19,7 +20,6 @@ const NewTour = () => {
   const navigate = useNavigate();
   const { error } = useSelector((state) => ({ ...state.tour }));
 
-  const titleRef = useRef();
   const [tour, setTour] = useState(initialState);
   const [tagErrorMsg, setTagErrorMsg] = useState(null);
 
@@ -58,10 +58,6 @@ const NewTour = () => {
   };
 
   useEffect(() => {
-    titleRef.current.focus();
-  }, []);
-
-  useEffect(() => {
     error && toast.error(error);
   }, [error]);
 
@@ -69,26 +65,23 @@ const NewTour = () => {
     <Container>
       <Title>New tour</Title>
       <Form onSubmit={handleSubmit}>
+        {tourInputs.map((input) => {
+          const { id, name, type, label, placeholder } = input;
+          return (
+            <FormGroup key={id}>
+              <Label htmlFor={name}>{label}</Label>
+              <Input
+                id={name}
+                type={type}
+                name={name}
+                placeholder={placeholder}
+                onChange={handleChange}
+              />
+            </FormGroup>
+          );
+        })}
         <FormGroup>
-          <Label>Title</Label>
-          <Input
-            type='text'
-            name='title'
-            placeholder='Title'
-            ref={titleRef}
-            onChange={handleChange}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label>Description</Label>
-          <Input
-            type='text'
-            name='description'
-            placeholder='Description'
-            onChange={handleChange}
-          />
-        </FormGroup>
-        <FormGroup>
+          <Label>Tags</Label>
           <ChipInput
             name='tags'
             variant='outlined'
@@ -134,6 +127,7 @@ const FormGroup = styled.div`
 const Label = styled.label`
   text-transform: capitalize;
   font-size: 1.2rem;
+  display: block;
   color: gray;
 `;
 
@@ -148,10 +142,11 @@ const Input = styled.input`
   border: 1px solid gray;
   border-radius: 3px;
   -webkit-transition: all 0.5s ease;
-  transition: all 0.5s ease;
+  transition: all 0.15s ease;
 
   &:focus {
     outline: none;
+    border: 2px solid #00008b;
     -webkit-box-shadow: 0 1rem 2rem rgba(00, 00, 00, 0.1);
     -moz-box-shadow: 0 1rem 2rem rgba(00, 00, 00, 0.1);
     box-shadow: 0 1rem 2rem rgba(00, 00, 00, 0.1);
