@@ -87,7 +87,6 @@ const TopLeft = styled.div``;
 const Logo = styled.div`
   font-size: 3rem;
   font-weight: bold;
-  font-family: 'Great Vibes', cursive;
   color: #00008b;
   cursor: pointer;
 `;
