@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
+import { Publish } from '@material-ui/icons';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getStorage,
@@ -12,6 +13,7 @@ import {
 
 import app from '../firebase';
 import { phone } from 'responsive';
+import { userInputs } from 'formData';
 import { registerUser } from 'features/user/userSlice';
 
 const initialState = {
@@ -27,7 +29,6 @@ const NewUser = () => {
   const navigate = useNavigate();
   const { error } = useSelector((state) => ({ ...state.user }));
 
-  const firstNameRef = useRef();
   const [file, setFile] = useState(null);
   const [user, setUser] = useState(initialState);
 
@@ -89,10 +90,6 @@ const NewUser = () => {
   };
 
   useEffect(() => {
-    firstNameRef.current.focus();
-  }, []);
-
-  useEffect(() => {
     error && toast.error(error);
   }, [error]);
 
@@ -101,61 +98,33 @@ const NewUser = () => {
       <Title>New user</Title>
       <Form onSubmit={handleSubmit}>
         <FormContainer>
-          <FormGroup>
-            <FormInput
-              type='text'
-              name='firstName'
-              placeholder='First Name'
-              ref={firstNameRef}
-              onChange={handleChange}
-              required
-            />
-            <FormLabel>First Name</FormLabel>
-          </FormGroup>
-          <FormGroup>
-            <FormInput
-              type='text'
-              name='lastName'
-              placeholder='Last Name'
-              onChange={handleChange}
-              required
-            />
-            <FormLabel>Last Name</FormLabel>
-          </FormGroup>
-          <FormGroup>
-            <FormInput
-              type='email'
-              name='email'
-              placeholder='Email'
-              onChange={handleChange}
-              required
-            />
-            <FormLabel>Email</FormLabel>
-          </FormGroup>
-          <FormGroup>
-            <FormInput
-              type='password'
-              name='password'
-              placeholder='Password'
-              onChange={handleChange}
-              required
-            />
-            <FormLabel>Password</FormLabel>
-          </FormGroup>
-          <FormGroup>
-            <FormInput
-              type='password'
-              name='passwordConfirm'
-              placeholder='Confirm Password'
-              onChange={handleChange}
-              required
-            />
-            <FormLabel>Confirm password</FormLabel>
-          </FormGroup>
+          {userInputs.map((input) => {
+            const { id, type, name, label, placeholder } = input;
+            return (
+              <FormWrapper key={id}>
+                <FormGroup>
+                  <FormInput
+                    type={type}
+                    name={name}
+                    placeholder={placeholder}
+                    onChange={handleChange}
+                    required
+                  />
+                  <FormLabel>{label}</FormLabel>
+                </FormGroup>
+              </FormWrapper>
+            );
+          })}
+
           <FormFileGroup>
+            <FormFileLabel htmlFor='file'>
+              Avatar: <Publish style={{ fontSize: '2rem' }} />
+            </FormFileLabel>
             <FormInput
+              id='file'
               type='file'
               onChange={(e) => setFile(e.target.files[0])}
+              style={{ display: 'none' }}
             />
           </FormFileGroup>
         </FormContainer>
@@ -182,6 +151,8 @@ const FormContainer = styled.div`
   flex-wrap: wrap;
 `;
 
+const FormWrapper = styled.div``;
+
 const FormGroup = styled.div`
   width: 40rem;
   display: flex;
@@ -198,8 +169,8 @@ const FormGroup = styled.div`
 const FormFileGroup = styled.div`
   width: 40rem;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
   padding-bottom: 1rem;
   margin-right: 2rem;
 
@@ -216,6 +187,16 @@ const FormLabel = styled.label`
   margin-left: 2rem;
   margin-top: 0.7rem;
   color: rgb(151, 150, 150);
+`;
+
+const FormFileLabel = styled.label`
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-left: 2rem;
+  margin-top: 0.7rem;
+  color: rgb(151, 150, 150);
+  display: flex;
+  align-items: center;
 `;
 
 const FormInput = styled.input`
