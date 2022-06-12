@@ -5,6 +5,7 @@ import { DataGrid } from '@material-ui/data-grid';
 import { DeleteOutline } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { commentColumns } from 'data';
 import { fetchComments, removeComment } from 'features/comment/commentSlice';
 
 const CommentList = () => {
@@ -21,37 +22,7 @@ const CommentList = () => {
     dispatch(fetchComments());
   }, [dispatch]);
 
-  const columns = [
-    { field: 'id', headerName: 'ID', width: 230 },
-    { field: 'body', headerName: 'Comment Body', width: 300 },
-    {
-      field: 'user',
-      headerName: 'User',
-      width: 230,
-      renderCell: (params) => {
-        return (
-          <CommentListUser>
-            <Image
-              src={params.row.user.avatar || 'assets/images/user-default.jpg'}
-            />
-            {params.row.user.name}
-          </CommentListUser>
-        );
-      },
-    },
-    {
-      field: 'tour',
-      headerName: 'Tour',
-      width: 230,
-      renderCell: (params) => {
-        return (
-          <TourListTitle>
-            <Image src={params.row.tour.image} />
-            {params.row.tour.title}
-          </TourListTitle>
-        );
-      },
-    },
+  const actionColumn = [
     {
       field: 'action',
       headerName: 'Action',
@@ -75,7 +46,7 @@ const CommentList = () => {
     <Container>
       <DataGrid
         rows={comments}
-        columns={columns}
+        columns={commentColumns.concat(actionColumn)}
         getRowId={(row) => row._id}
         disableSelectionOnClick
         pageSize={8}
@@ -90,25 +61,6 @@ const CommentList = () => {
 const Container = styled.div`
   flex: 4;
   padding: 2rem;
-`;
-
-const TourListTitle = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const CommentListUser = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Image = styled.img`
-  width: 3.2rem;
-  height: 3.2rem;
-  border-radius: 50%;
-  display: block;
-  object-fit: cover;
-  margin-right: 1rem;
 `;
 
 export default CommentList;
