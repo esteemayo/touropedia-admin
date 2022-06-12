@@ -306,6 +306,39 @@ const productColumns = [
   },
 ];
 
+const commentColumns = [
+  { field: 'id', headerName: 'ID', width: 230 },
+  { field: 'body', headerName: 'Comment Body', width: 300 },
+  {
+    field: 'user',
+    headerName: 'User',
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <CommentListUser>
+          <Image
+            src={params.row.user.avatar || 'assets/images/user-default.jpg'}
+          />
+          {params.row.user.name}
+        </CommentListUser>
+      );
+    },
+  },
+  {
+    field: 'tour',
+    headerName: 'Tour',
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <TourListTitle>
+          <Image src={params.row.tour.image} />
+          {params.row.tour.title}
+        </TourListTitle>
+      );
+    },
+  },
+];
+
 const UserListUser = styled.div`
   display: flex;
   align-items: center;
@@ -332,7 +365,13 @@ const TourListUser = styled.div`
   align-items: center;
 `;
 
+const CommentListUser = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 export {
+  commentColumns,
   userColumns,
   userData,
   productData,
