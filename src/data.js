@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+
 const userData = [
   {
     name: 'Jan',
@@ -157,6 +159,33 @@ const userRows = [
   },
 ];
 
+const userColumns = [
+  { field: '_id', headerName: 'ID', width: 230 },
+  {
+    field: 'user',
+    headerName: 'User',
+    width: 230,
+    renderCell: (params) => {
+      return (
+        <UserListUser>
+          <Image src={params.row.avatar || 'assets/images/user-default.jpg'} />
+          {params.row.name}
+        </UserListUser>
+      );
+    },
+  },
+  { field: 'email', headerName: 'Email', width: 200 },
+  { field: 'role', headerName: 'Role', width: 150 },
+  {
+    field: 'active',
+    headerName: 'Status',
+    width: 150,
+    renderCell: (params) => {
+      return <Wrapper>{params.row.active === true && 'Active'}</Wrapper>;
+    },
+  },
+];
+
 const productRows = [
   {
     id: 1,
@@ -240,4 +269,20 @@ const productRows = [
   },
 ];
 
-export { userData, productData, userRows, productRows };
+const UserListUser = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Image = styled.img`
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+  margin-right: 1rem;
+`;
+
+const Wrapper = styled.div``;
+
+export { userColumns, userData, productData, userRows, productRows };
